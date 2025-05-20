@@ -66,7 +66,7 @@ export default function CubeScene({ colors }) {
 
         <AnimatedCube colors={faceColors} />
 
-        <TrackballControls />
+        <TrackballControls zoomSpeed={0} />
       </Canvas>
     </div>
   );

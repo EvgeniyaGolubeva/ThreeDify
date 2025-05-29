@@ -1,3 +1,7 @@
+#Зарежда URL за базата от .env.
+#Създава engine (връзка към Postgres).
+#Създава session maker, който по-късно използвам в route-овете.
+
 from dotenv import load_dotenv
 import os
 

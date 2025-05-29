@@ -5,3 +5,9 @@ from pydantic import BaseModel, EmailStr
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+
+#input-модел за login endpoint-а.
+#EmailStr се грижи автоматично да проверява дали въведеният имейл е валиден.
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str

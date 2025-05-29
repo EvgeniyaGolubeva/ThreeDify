@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from app.database import Base
 
-
 #Дефинира базовата структура на таблицата users.
 #hashed_password пази криптирана парола.
 class User(Base):

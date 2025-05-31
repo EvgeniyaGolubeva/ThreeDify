@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from app.database import Base
-from sqlalchemy import ForeignKey, DateTime
+from sqlalchemy import ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from sqlalchemy import Float
@@ -12,8 +12,10 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    is_admin = Column(Boolean, default=False)
 
     sessions = relationship("Session", back_populates="user")
+
 
 #Дефинира базовата структура на таблицата sessions.
 class Session(Base):

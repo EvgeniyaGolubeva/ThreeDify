@@ -30,3 +30,14 @@ class SessionOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+#output-модел за админ панела
+class UserWithStats(BaseModel):
+    id: int
+    email: EmailStr
+    is_admin: bool
+    session_count: int
+    accuracy: float
+
+    class Config:
+        from_attributes = True

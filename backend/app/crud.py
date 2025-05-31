@@ -16,7 +16,8 @@ def get_password_hash(password):
 #Връща създадения потребител с вече зададено id.
 def create_user(db: Session, user: UserCreate):
     hashed_password = get_password_hash(user.password)
-    db_user = models.User(email=user.email, hashed_password=hashed_password)
+    is_first_user = db.query(models.User).count() == 0
+    db_user = models.User(email=user.email, hashed_password=hashed_password, is_admin=is_first_user)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

@@ -7,10 +7,13 @@ from app import crud
 from app.schemas import UserLogin
 from app.dependencies import get_current_user
 from fastapi.security import OAuth2PasswordRequestForm
+from app.schemas import SessionCreate
+from app.dependencies import get_current_user
+from app import crud, schemas
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=database.engine)
+models.Base.metadata.create_all(bind=database.engine) #Създава всички таблици от Models
 
 @app.get("/")
 def read_root():
@@ -45,3 +48,20 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 @app.get("/me")
 def read_users_me(current_user: str = Depends(get_current_user)):
     return {"user": current_user}
+
+#Добавя към базата информация за сесията с упражнения
+@app.post("/sessions/save")
+def save_session(
+    session_data: SessionCreate,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    user = db.query(models.User).filter(models.User.email == current_user).first()
+    print("SAVE:", session_data)
+    return crud.create_session(db, user.id, session_data)
+
+#Резултати от сесията
+@app.get("/results", response_model=list[schemas.SessionOut])
+def get_results(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == current_user).first()
+    return db.query(models.Session).filter(models.Session.user_id == user.id).order_by(models.Session.created_at.desc()).all()

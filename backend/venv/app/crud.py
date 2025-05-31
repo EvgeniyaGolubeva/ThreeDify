@@ -46,3 +46,8 @@ def create_session(db: Session, user_id: int, session_data: SessionCreate):
     db.commit()
     db.refresh(db_session)
     return db_session
+
+#Взима резултати 
+def get_results_for_user(db: Session, user_email: str):
+    user = db.query(models.User).filter(models.User.email == user_email).first()
+    return db.query(models.Session).filter(models.Session.user_id == user.id).order_by(models.Session.created_at.desc()).all()

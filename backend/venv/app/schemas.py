@@ -11,3 +11,9 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+#input-модел за сесията с упражнения
+class SessionCreate(BaseModel):
+    correct_answers: int
+    incorrect_answers: int
+    duration_seconds: int

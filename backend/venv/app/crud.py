@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 from app import models
 from app.schemas import UserCreate
 from passlib.context import CryptContext
+from app.schemas import SessionCreate
+from app.models import Session
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -31,3 +33,16 @@ def authenticate_user(db: Session, email: str, password: str):
     if not verify_password(password, user.hashed_password):
         return None
     return user
+
+# Създава сесия с упражнения
+def create_session(db: Session, user_id: int, session_data: SessionCreate):
+    db_session = Session(
+        user_id=user_id,
+        correct_answers=session_data.correct_answers,
+        incorrect_answers=session_data.incorrect_answers,
+        duration_seconds=session_data.duration_seconds,
+    )
+    db.add(db_session)
+    db.commit()
+    db.refresh(db_session)
+    return db_session

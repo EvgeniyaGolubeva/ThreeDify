@@ -25,5 +25,7 @@ class Session(Base):
     incorrect_answers = Column(Integer, nullable=False)
     duration_seconds = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    accuracy = Column(Float)
+    trend = Column(Float)
 
     user = relationship("User", back_populates="sessions")

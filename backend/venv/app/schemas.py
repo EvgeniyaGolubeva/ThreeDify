@@ -25,6 +25,8 @@ class SessionOut(BaseModel):
     incorrect_answers: int
     duration_seconds: int
     created_at: datetime
+    accuracy: float
+    trend: float
 
     class Config:
         orm_mode = True

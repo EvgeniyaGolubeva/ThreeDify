@@ -4,6 +4,7 @@ from app.schemas import UserCreate
 from passlib.context import CryptContext
 from app.schemas import SessionCreate
 from app.models import Session
+import math
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -36,12 +37,29 @@ def authenticate_user(db: Session, email: str, password: str):
 
 # Създава сесия с упражнения
 def create_session(db: Session, user_id: int, session_data: SessionCreate):
+    total = session_data.correct_answers + session_data.incorrect_answers
+    raw_accuracy = session_data.correct_answers / total if total > 0 else 0.0
+    accuracy = raw_accuracy * min(math.log(total + 1), 2.0) * 50  # гарантира макс 100
+
+    previous_session = (
+        db.query(models.Session)
+        .filter(models.Session.user_id == user_id)
+        .order_by(models.Session.created_at.desc())
+        .first()
+    )
+
+    prev_accuracy = previous_session.accuracy if previous_session else accuracy
+    trend = ((accuracy - prev_accuracy) / prev_accuracy) * 100 if prev_accuracy > 0 else accuracy
+
     db_session = Session(
         user_id=user_id,
         correct_answers=session_data.correct_answers,
         incorrect_answers=session_data.incorrect_answers,
         duration_seconds=session_data.duration_seconds,
+        accuracy=accuracy,
+        trend=trend,
     )
+
     db.add(db_session)
     db.commit()
     db.refresh(db_session)

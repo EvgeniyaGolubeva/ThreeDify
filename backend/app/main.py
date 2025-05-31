@@ -10,8 +10,17 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas import SessionCreate
 from app.dependencies import *
 from app import crud, schemas
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 models.Base.metadata.create_all(bind=database.engine) #Създава всички таблици от Models
 

@@ -1,10 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+/*
+Стартира приложението и обвива го с AuthProvider, за да имаме достъп до потребителя във всички компоненти
+*/
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import AppRouter from './router.jsx';
+import { AuthProvider } from './context/AuthContext';
+
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(
+  <React.StrictMode>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  </React.StrictMode>
+);

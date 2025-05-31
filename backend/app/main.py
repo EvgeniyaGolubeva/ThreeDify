@@ -8,7 +8,7 @@ from app.schemas import UserLogin
 from app.dependencies import get_current_user
 from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas import SessionCreate
-from app.dependencies import get_current_user
+from app.dependencies import *
 from app import crud, schemas
 
 app = FastAPI()
@@ -18,13 +18,6 @@ models.Base.metadata.create_all(bind=database.engine) #Създава всичк
 @app.get("/")
 def read_root():
     return {"message": "Connected to PostgreSQL successfully!"}
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 #Регистрация - извиква create_user() (от crud.py) и го създава ако може да създаде, т.е. имейлът е ок.
 @app.post("/register")
@@ -54,14 +47,52 @@ def read_users_me(current_user: str = Depends(get_current_user)):
 def save_session(
     session_data: SessionCreate,
     db: Session = Depends(get_db),
-    current_user: str = Depends(get_current_user)
+    current_user: models.User = Depends(get_current_user)
 ):
-    user = db.query(models.User).filter(models.User.email == current_user).first()
     print("SAVE:", session_data)
-    return crud.create_session(db, user.id, session_data)
+    return crud.create_session(db, current_user.id, session_data)
 
 #Резултати от сесията
 @app.get("/results", response_model=list[schemas.SessionOut])
-def get_results(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.email == current_user).first()
-    return db.query(models.Session).filter(models.Session.user_id == user.id).order_by(models.Session.created_at.desc()).all()
+def get_results(current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    return db.query(models.Session).filter(models.Session.user_id == current_user.id).order_by(models.Session.created_at.desc()).all()
+
+#Връща текущите user-и и техните резултати
+@app.get("/admin/stats")
+def admin_stats(current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    users = db.query(models.User).all()
+    stats = []
+
+    for user in users:
+        sessions = db.query(models.Session).filter(models.Session.user_id == user.id).order_by(models.Session.created_at.desc()).all()
+        if not sessions:
+            continue  
+
+        latest = sessions[0]
+        total_tries = sum(s.correct_answers + s.incorrect_answers for s in sessions)
+
+        stats.append({
+            "email": user.email,
+            "tries": total_tries,
+            "accuracy": latest.accuracy,
+            "trend": latest.trend,
+            "is_admin": user.is_admin
+        })
+
+    return stats
+
+#Да направя някого admin може само ако съм вече админ
+@app.post("/admin/make_admin/{user_id}")
+def make_admin(user_id: int, db: Session = Depends(get_db), current_admin: models.User = Depends(get_current_admin_user)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.is_admin:
+        return {"message": "User is already an admin"}
+
+    user.is_admin = True
+    db.commit()
+    return {"message": f"{user.email} is now an admin"}

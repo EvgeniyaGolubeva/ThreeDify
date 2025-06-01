@@ -10,8 +10,17 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas import SessionCreate
 from app.dependencies import *
 from app import crud, schemas
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 models.Base.metadata.create_all(bind=database.engine) #Създава всички таблици от Models
 
@@ -75,6 +84,7 @@ def admin_stats(current_user: models.User = Depends(get_current_user), db: Sessi
         total_tries = sum(s.correct_answers + s.incorrect_answers for s in sessions)
 
         stats.append({
+            "id": user.id,
             "email": user.email,
             "tries": total_tries,
             "accuracy": latest.accuracy,

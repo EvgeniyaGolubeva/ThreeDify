@@ -9,7 +9,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Start from "./pages/Start"; 
 import Exercise from "./pages/Exercise"; 
-
+import Result from "./pages/Result";
+import Account from "./pages/Account";
+import Admin from "./pages/Admin";
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
@@ -17,6 +19,7 @@ function ProtectedRoute({ children }) {
 }
 
 export default function AppRouter() {
+  const { user } = useAuth();
   return (
     <Router>
       <Routes>
@@ -24,6 +27,9 @@ export default function AppRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="/start" element={<ProtectedRoute><Start /></ProtectedRoute>} />
         <Route path="/exercise" element={<ProtectedRoute><Exercise /></ProtectedRoute>} />
+        <Route path="/result" element={<ProtectedRoute><Result /></ProtectedRoute>} />
+        <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute>{user?.is_admin ? <Admin /> : <Navigate to="/start" />}</ProtectedRoute> }/>
         <Route path="*" element={<Navigate to="/start" />} />
       </Routes>
     </Router>

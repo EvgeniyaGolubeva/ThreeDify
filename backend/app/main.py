@@ -84,6 +84,7 @@ def admin_stats(current_user: models.User = Depends(get_current_user), db: Sessi
         total_tries = sum(s.correct_answers + s.incorrect_answers for s in sessions)
 
         stats.append({
+            "id": user.id,
             "email": user.email,
             "tries": total_tries,
             "accuracy": latest.accuracy,

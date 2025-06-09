@@ -45,7 +45,7 @@ function AnimatedCube({ colors }) {
 
   return (
     <mesh ref={cubeRef}>
-      <boxGeometry args={[3, 3, 3]} />
+      <boxGeometry args={[3.5, 3.5, 3.5]} />
       {faceMaterials}
     </mesh>
   );
@@ -58,7 +58,7 @@ export default function CubeScene({ colors }) {
 
   return (
     <div style={{ backgroundColor: '#fff' }}>
-      <Canvas style={{ height: '600px', width: '600px' }}>
+      <Canvas className="cube-canvas">
         <ambientLight intensity={0.8} />
         <directionalLight position={[5, 5, 5]} intensity={0.6} />
         <ambientLight intensity={0.8} />

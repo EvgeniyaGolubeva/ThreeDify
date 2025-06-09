@@ -3,7 +3,10 @@
 */
 
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import './Start.css';
+import './App.css';
 
 export default function Start() {
   const navigate = useNavigate();
@@ -27,32 +30,32 @@ export default function Start() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h1>Здравей, {user?.email} 👋</h1>
-      <p>Готов ли си за следващото предизвикателство?</p>
-      <button onClick={handleStart} style={{ padding: "1em 2em", fontSize: "1.2em", marginRight: "10px" }}>
-        Започни упражнение
-      </button>
+    <div className="app-shell">
+      <aside className="sidebar">
+        <h2>ThreeDify</h2>
+        <nav>
+          <ul>
+            <li><Link to="/start">Начало</Link></li>
+            <li><Link to="/exercise">Упражнения</Link></li>
+            <li><Link to="/account">Статистика</Link></li>
+          </ul>
 
-        <button
-          onClick={handleAccount}
-          style={{ padding: "1em 2em", fontSize: "1.2em", marginRight: "10px", background: "#2196f3", color: "#fff" }}
-        >
-          Моите резултати
-        </button>
+        </nav>
+      </aside>
 
-        {user?.is_admin && (
-          <button
-            onClick={handleAdmin}
-            style={{ padding: "1em 2em", fontSize: "1.2em", marginRight: "10px", background: "#9c27b0", color: "#fff" }}
-          >
-            Админ панел
-          </button>
-        )}
+      <main className="main-content">
+        <div className="game-window">
+          <h1>Здравей, {user?.email} 👋</h1>
+          <p>Готов ли си за следващото предизвикателство?</p>
 
-      <button onClick={handleLogout} style={{ padding: "1em 2em", fontSize: "1.2em", background: "#f44336", color: "white" }}>
-        Изход
-      </button>
+          <div className="start-buttons">
+            <button onClick={handleStart}>Започни упражнение</button>
+            <button onClick={handleAccount}>Моите резултати</button>
+            {user?.is_admin && <button onClick={handleAdmin}>Админ панел</button>}
+            <button onClick={handleLogout}>Изход</button>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

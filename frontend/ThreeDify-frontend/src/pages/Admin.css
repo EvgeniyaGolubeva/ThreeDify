@@ -1,0 +1,30 @@
+.game-window table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.game-window th,
+.game-window td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.game-window th {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.game-window button {
+  background: #9c27b0;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.game-window button:hover {
+  background: #7b1fa2;
+}

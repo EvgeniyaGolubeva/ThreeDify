@@ -4,9 +4,11 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CubeScene from "../components/CubeScene";
 import CubeNet from "../components/CubeNet";
 import axios from "../api/axios";
+import './Exercise.css';
 
 function generateDistinctColors(count = 6) {
   const step = 360 / count;
@@ -103,6 +105,7 @@ export default function Exercise() {
     const duration = 180 - timeLeft;
 
     try {
+      яconsole.log("Token:", localStorage.getItem("token"));
       const res = await axios.post("/sessions/save", {
         correct_answers: correctAnswers,
         incorrect_answers: incorrectAnswers,
@@ -115,33 +118,50 @@ export default function Exercise() {
     }
   };
 
-  return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h2>Оставащо време: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, "0")}</h2>
-      <p>Върти куба и избери вярната разгъвка!</p>
+return (
+  <div className="app-shell">
+    <aside className="sidebar">
+      <h2>ThreeDify</h2>
+      <nav>
+          <ul>
+            <li><Link to="/start">Начало</Link></li>
+            <li><Link to="/exercise">Упражнения</Link></li>
+            <li><Link to="/account">Статистика</Link></li>
+          </ul>
 
-      <div style={{ marginBottom: "2rem" }}>
-        <CubeScene colors={cubeColors} />
+      </nav>
+    </aside>
+
+    <main className="main-content">
+      <div className="game-window">
+        <h2>Оставащо време: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, "0")}</h2>
+        <p>Върти куба и избери вярната разгъвка!</p>
+
+        <div className="cube-section">
+          <CubeScene colors={cubeColors} />
+        </div>
+
+        <div className="nets-row">
+          {layouts.map((layout, index) => {
+            let borderColor = "#ccc";
+            if (selectedIndex === index) {
+              borderColor = isCorrect ? "#4CAF50" : "#f44336";
+            }
+
+            return (
+              <div
+                key={index}
+                className="net-option"
+                style={{ borderColor }}
+                onClick={() => handleAnswer(index)}
+              >
+                <CubeNet colors={cubeColors} layout={layout} />
+              </div>
+            );
+          })}
+        </div>
       </div>
-
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-        {layouts.map((layout, index) => {
-          let borderColor = "#ccc";
-          if (selectedIndex === index) {
-            borderColor = isCorrect ? "#4CAF50" : "#f44336";
-          }
-
-          return (
-            <div
-              key={index}
-              onClick={() => handleAnswer(index)}
-              style={{ border: `3px solid ${borderColor}`, padding: "5px", cursor: "pointer" }}
-            >
-              <CubeNet colors={cubeColors} layout={layout} />
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+    </main>
+  </div>
+);
 }

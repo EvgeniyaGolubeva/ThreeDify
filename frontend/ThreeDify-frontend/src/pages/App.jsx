@@ -3,6 +3,7 @@
  */
 
 import { useState } from 'react';
+import { Link } from "react-router-dom";
 import CubeScene from './components/CubeScene';
 import CubeNet from './components/CubeNet';
 import './App.css';
@@ -76,10 +77,9 @@ function App() {
         <h2>ThreeDify</h2>
         <nav>
           <ul>
-            <li><a href="#">Начало</a></li>
-            <li><a href="#">Упражнения</a></li>
-            <li><a href="#">Статистика</a></li>
-            <li><a href="#">Настройки</a></li>
+            <li><Link to="/start">Начало</Link></li>
+            <li><Link to="/exercise">Упражнения</Link></li>
+            <li><Link to="/account">Статистика</Link></li>
           </ul>
         </nav>
       </aside>

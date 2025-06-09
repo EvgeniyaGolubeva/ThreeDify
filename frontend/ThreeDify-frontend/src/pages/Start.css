@@ -1,0 +1,169 @@
+.start-container {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.start-container h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #3f51b5;
+}
+
+.start-container p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #444;
+}
+
+.start-container button {
+  font-size: 1.1rem;
+  padding: 1em 2em;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.start-container button:first-of-type {
+  background-color: #eeeeee;
+  color: #333;
+}
+
+.start-container button:nth-of-type(2) {
+  background-color: #2196f3;
+  color: white;
+}
+
+.start-container button:nth-of-type(3) {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.start-container button:last-of-type {
+  background-color: #f44336;
+  color: white;
+}
+
+.start-container button:hover {
+  opacity: 0.9;
+}
+
+/* 📱 Mobile tweaks */
+@media screen and (max-width: 480px) {
+  .start-container {
+    width: 90vw;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .start-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .start-container button {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+}
+
+.start-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.start-buttons button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.start-buttons button:nth-child(1) {
+  background-color: #eeeeee;
+  color: #333;
+}
+
+.start-buttons button:nth-child(2) {
+  background-color: #2196f3;
+  color: white;
+}
+
+.start-buttons button:nth-child(3) {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.start-buttons button:nth-child(4) {
+  background-color: #f44336;
+  color: white;
+}
+
+.start-buttons button:hover {
+  opacity: 0.9;
+}
+
+@media screen and (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+    padding-bottom: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .game-window {
+    width: 100%;
+    max-width: 500px;
+    padding: 1.5rem;
+    margin: 0 auto;
+    box-shadow: none;
+    border-radius: 0;
+    text-align: center;
+    background-color: #ffffff;
+  }
+
+  .game-window h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    word-break: break-word; /* предотвратява изрязване на имейла */
+  }
+
+  .game-window p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .start-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .start-buttons button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
+
+  .start-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .start-buttons button {
+    width: 100%;
+  }
+}
+

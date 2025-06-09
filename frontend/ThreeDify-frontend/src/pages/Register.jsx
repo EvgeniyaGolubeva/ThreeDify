@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import './Register.css';
 
 export default function Register() {
   const { register } = useAuth();
@@ -24,15 +25,25 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ textAlign: "center", marginTop: "100px" }}>
+    <form onSubmit={handleSubmit} className="register-container">
       <h2>Регистрация</h2>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Имейл" />
-      <br />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Парола" />
-      <br />
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Имейл"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Парола"
+        required
+      />
       <button type="submit">Регистрирай се</button>
 
-      <p style={{ marginTop: "1em" }}>
+      <p>
         Вече имаш акаунт? <Link to="/login">Влез тук</Link>
       </p>
     </form>

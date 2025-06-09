@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import './Login.css';
 
 export default function Login() {
   const { login } = useAuth();
@@ -24,15 +25,25 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ textAlign: "center", marginTop: "100px" }}>
+    <form onSubmit={handleSubmit} className="login-container">
       <h2>Вход</h2>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Имейл" />
-      <br />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Парола" />
-      <br />
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Имейл"
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Парола"
+        required
+      />
       <button type="submit">Влез</button>
 
-      <p style={{ marginTop: "1em" }}>
+      <p>
         Нямаш акаунт? <Link to="/register">Регистрирай се</Link>
       </p>
     </form>

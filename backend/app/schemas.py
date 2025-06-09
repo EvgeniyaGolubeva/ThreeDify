@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 from datetime import datetime
 
 #input-модел за register endpoint-а.
@@ -27,9 +27,7 @@ class SessionOut(BaseModel):
     created_at: datetime
     accuracy: float
     trend: float
-
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 #output-модел за админ панела
 class UserWithStats(BaseModel):
@@ -38,6 +36,4 @@ class UserWithStats(BaseModel):
     is_admin: bool
     session_count: int
     accuracy: float
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

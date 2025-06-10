@@ -105,7 +105,7 @@ export default function Exercise() {
     const duration = 180 - timeLeft;
 
     try {
-      яconsole.log("Token:", localStorage.getItem("token"));
+      console.log("Token:", localStorage.getItem("token"));
       const res = await axios.post("/sessions/save", {
         correct_answers: correctAnswers,
         incorrect_answers: incorrectAnswers,

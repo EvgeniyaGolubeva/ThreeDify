@@ -11,6 +11,7 @@ from app.schemas import SessionCreate
 from app.dependencies import *
 from app import crud, schemas
 from fastapi.middleware.cors import CORSMiddleware
+from app.schemas import UserWithStats
 
 app = FastAPI()
 
@@ -47,9 +48,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     return {"access_token": access_token, "token_type": "bearer"}
 
 #Тестова функция за да видиш дали си авторизиран
-@app.get("/me")
-def read_users_me(current_user: str = Depends(get_current_user)):
-    return {"user": current_user}
+@app.get("/me", response_model=UserWithStats)
+def read_users_me(current_user: models.User = Depends(get_current_user)):
+    return current_user
 
 #Добавя към базата информация за сесията с упражнения
 @app.post("/sessions/save")
@@ -58,7 +59,8 @@ def save_session(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    print("SAVE:", session_data)
+    print("Incoming session:", session_data)
+    print("Authenticated user ID:", current_user.id)
     return crud.create_session(db, current_user.id, session_data)
 
 #Резултати от сесията

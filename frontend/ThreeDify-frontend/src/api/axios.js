@@ -20,4 +20,6 @@ instance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+console.log("Axios request to", config.url, "with token:", token);
+
 export default instance;

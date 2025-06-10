@@ -61,7 +61,7 @@ function generateRandomLayouts(correctLayout, count = 4) {
 
 export default function Exercise() {
   const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = useState(180); // 3 мин
+  const [timeLeft, setTimeLeft] = useState(60); // 3 мин
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [incorrectAnswers, setIncorrectAnswers] = useState(0);
   const [cubeColors, setCubeColors] = useState(generateDistinctColors());
@@ -114,7 +114,8 @@ export default function Exercise() {
 
       navigate("/result", { state: res.data });
     } catch (err) {
-      alert("Грешка при записване на сесията.");
+      console.error("Save session error:", err);
+      alert("Грешка при записване на сесията: " + (err.response?.data?.detail || "Unknown error"));
     }
   };
 

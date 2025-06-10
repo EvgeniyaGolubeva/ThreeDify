@@ -12,6 +12,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
+    console.log("Axios request to", config.url, "with token:", token);
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,6 +22,5 @@ instance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-console.log("Axios request to", config.url, "with token:", token);
 
 export default instance;

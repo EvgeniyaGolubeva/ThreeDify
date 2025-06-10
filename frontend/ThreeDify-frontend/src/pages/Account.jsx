@@ -22,7 +22,7 @@ export default function Account() {
 
   const formatDate = (iso) => new Date(iso).toLocaleString("bg-BG");
 
-  const chartData = sessions.map((s, i) => ({
+  const chartData = sessions.reverse().map((s, i) => ({
     name: `#${i + 1}`,
     accuracy: parseFloat(s.accuracy).toFixed(2),
   }));

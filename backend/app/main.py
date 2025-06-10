@@ -50,7 +50,18 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 #Тестова функция за да видиш дали си авторизиран
 @app.get("/me", response_model=UserWithStats)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
-    return current_user
+    # Compute stats with default fallbacks to avoid crash
+    session_count = len(current_user.sessions) if current_user.sessions else 0
+    latest = current_user.sessions[-1] if current_user.sessions else None
+    accuracy = latest.accuracy if latest else 0.0
+
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+        "is_admin": current_user.is_admin,
+        "session_count": session_count,
+        "accuracy": accuracy
+    }
 
 #Добавя към базата информация за сесията с упражнения
 @app.post("/sessions/save")

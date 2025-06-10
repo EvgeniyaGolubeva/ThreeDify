@@ -12,18 +12,22 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-  useEffect(() => {   // Автоматично зареждане на потребител с GET /me
+  useEffect(() => { //get me
     if (token) {
       axios
-        .get("/me") 
-        .then((res) => setUser(res.data))
+        .get("/me")
+        .then((res) => {
+          console.log("Loaded user:", res.data);
+          setUser(res.data);
+        })
         .catch(() => {
+          console.warn("Failed to load user /me");
           setToken("");
           localStorage.removeItem("token");
         });
     }
   }, [token]);
-
+  
   const login = async (email, password) => {
     const data = new URLSearchParams();
     data.append("username", email);

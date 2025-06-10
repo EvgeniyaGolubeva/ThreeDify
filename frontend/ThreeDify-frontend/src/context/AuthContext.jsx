@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       axios
         .get("/me") 
-        .then((res) => setUser(res.data.user))
+        .then((res) => setUser(res.data))
         .catch(() => {
           setToken("");
           localStorage.removeItem("token");
